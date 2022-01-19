@@ -2,21 +2,30 @@ import styled from 'styled-components';
 import { ReactComponent as Iconsearch } from '..//assets/icon-search.svg';
 import { ReactComponent as Iconnew } from '..//assets/icon-new.svg';
 import { ReactComponent as Iconbeta } from '..//assets/icon-beta.svg';
+import { ReactComponent as Iconoption } from '..//assets/icon-menu.svg';
+import { MEDIA_QUERY_END_POINT } from '../constants';
 
 const Header = () => {
   return (
     <Section>
       <Mainbar>
         <Nav>
-          <Leftside>
-            <Btnmenu>
-              <img src="/assets/icon-menu.png" alt="" />
-            </Btnmenu>
-            <Logo href="/">
-              <h2>WANTED</h2>
-            </Logo>
-          </Leftside>
+          <Topside>
+            <Leftside>
+              <Btnmenu>
+                <img src="/assets/icon-menu.png" alt="" />
+              </Btnmenu>
+              <Logo href="/">
+                <h2>wanted</h2>
+              </Logo>
+            </Leftside>
+
+            <Btnjoin>회원가입하기</Btnjoin>
+          </Topside>
           <Menuitems>
+            <Itemhome>
+              <Item href="">홈</Item>
+            </Itemhome>
             <li>
               <Item href="">채용</Item>
             </li>
@@ -57,7 +66,12 @@ const Header = () => {
                 </Btnsearch>
               </li>
               <li>
-                <Btnjoin>회원가입/로그인</Btnjoin>
+                <Btnoption>
+                  <Iconoption></Iconoption>
+                </Btnoption>
+              </li>
+              <li>
+                <Btnlogin>회원가입/로그인</Btnlogin>
               </li>
               <Serviceitem>
                 <a href="/">기업서비스</a>
@@ -79,11 +93,26 @@ const Section = styled.section`
   z-index: 100;
   box-shadow: 0 1px 0 0 rgb(0 0 0 / 10%);
   color: #333333;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    height: 110px;
+  }
 `;
 
 const Mainbar = styled.div`
   margin: 0 auto;
+  max-width: 1060px;
   width: 87.72%;
+
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    width: 90%;
+  }
+
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    width: 90%;
+  }
+  @media (max-width: ${MEDIA_QUERY_END_POINT.MOBILE}) {
+    width: 100%;
+  }
 `;
 
 const Nav = styled.nav`
@@ -98,16 +127,47 @@ const Leftside = styled.section`
   align-items: center;
 `;
 
+const Topside = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    width: 100%;
+    padding: 15px 0;
+    height: 60px;
+  }
+  @media (max-width: ${MEDIA_QUERY_END_POINT.MOBILE}) {
+    width: 100%;
+    padding: 15px 20px;
+    height: 60px;
+  }
+`;
+
+const Btnjoin = styled.button`
+  display: none;
+  color: #36f;
+  font-size: 14px;
+  line-height: 32px;
+  height: 34px;
+  border: 1px solid #36f;
+  border-radius: 17px;
+  padding: 0 14px;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    display: block;
+  }
+`;
+
 const Logo = styled.a`
   h2 {
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 900;
   }
 `;
 
 const Btnmenu = styled.button`
   margin-top: -2px;
   margin-right: 15px;
+  padding: 0;
   img {
     width: 17px;
     height: 14px;
@@ -117,22 +177,62 @@ const Btnmenu = styled.button`
 
 const Menuitems = styled.ul`
   display: flex;
+
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    flex: 1 1;
+    justify-content: space-evenly;
+  }
+  justify-content: space-evenly;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    justify-content: flex-start;
+  }
+
+  @media (max-width: ${MEDIA_QUERY_END_POINT.MOBILE}) {
+    li:nth-child(3) ~ li {
+      display: none;
+    }
+  }
+`;
+
+const Itemhome = styled.li`
+  display: none;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.MOBILE}) {
+    display: inline-block;
+    padding-left: 10px;
+  }
 `;
 
 const Item = styled.a`
   position: relative;
-  // vertical-align: middle;
+  vertical-align: middle;
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
   display: inline-block;
   padding: 15px;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    padding: 15px 0;
+    font-size: 13px;
+    justify-content: flex-start;
+  }
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    padding: 11px 10px 19px;
+    font-size: 13px;
+    margin: 0;
+  }
 
   em {
     position: absolute;
     top: 10px;
     right: -5px;
     pointer-events: none;
+    @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+      right: -20px;
+    }
+    @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+      top: 5px;
+      right: -7px;
+    }
   }
 `;
 
@@ -145,15 +245,26 @@ const Rightside = styled.aside`
 `;
 
 const Btnsearch = styled.button`
-  // margin-top: 5px;
   padding: 0 5px;
-  // font-size: 14px;
 `;
 
-const Btnjoin = styled.button`
+const Btnoption = styled.button`
+  display: none;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    display: inline-block;
+    padding-left: 10px;
+    margin-right: 10px;
+  }
+`;
+
+const Btnlogin = styled.button`
   padding: 0 10px;
   margin-right: 6px;
   font-weight: 600;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    display: none;
+    padding-left: 10px;
+  }
 `;
 
 const Serviceitem = styled.li`
@@ -176,5 +287,8 @@ const Serviceitem = styled.li`
     border-radius: 15px;
     padding: 0 10px;
     margin-left: 15px;
+  }
+  @media (max-width: ${MEDIA_QUERY_END_POINT.TABLET}) {
+    display: none;
   }
 `;
