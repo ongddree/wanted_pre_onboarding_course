@@ -6,35 +6,43 @@ import {
   useLayoutEffect,
   useRef,
   useEffect,
+  useCallback,
 } from 'react';
 import { ReactComponent as Iconleft } from '..//assets/icon-left.svg';
 import { ReactComponent as Iconright } from '..//assets/icon-right.svg';
+import { MEDIA_QUERY_END_POINT } from '../constants';
 
 const Carousel = ({ children }) => {
   const containerRef = useRef();
+  const intervalRef = useRef(null);
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
 
-  const handleSlide = (mode) => {
-    containerRef.current.style.transitionDuration = '400ms';
-    if (mode === 'prev') {
-      if (current <= 1) {
-        setTranslateX(0);
-        setCurrent(children.length);
-      } else {
-        setTranslateX(containerRef.current.clientWidth * (current - 1));
-        setCurrent((prev) => --prev);
+  const handleSlide = useCallback(
+    (mode) => {
+      containerRef.current.style.transitionDuration = '400ms';
+      if (mode === 'prev') {
+        if (current <= 1) {
+          setTranslateX(0);
+          setCurrent(children.length);
+        } else {
+          setTranslateX(containerRef.current.clientWidth * (current - 1));
+          setCurrent((prev) => --prev);
+        }
+      } else if (mode === 'next') {
+        if (current >= children.length) {
+          setTranslateX(
+            containerRef.current.clientWidth * (children.length + 1)
+          );
+          setCurrent(1);
+        } else {
+          setTranslateX(containerRef.current.clientWidth * (current + 1));
+          setCurrent((prev) => ++prev);
+        }
       }
-    } else if (mode === 'next') {
-      if (current >= children.length) {
-        setTranslateX(containerRef.current.clientWidth * (children.length + 1));
-        setCurrent(1);
-      } else {
-        setTranslateX(containerRef.current.clientWidth * (current + 1));
-        setCurrent((prev) => ++prev);
-      }
-    }
-  };
+    },
+    [current, children]
+  );
 
   useEffect(() => {
     const transitionEnd = () => {
@@ -53,6 +61,20 @@ const Carousel = ({ children }) => {
       document.removeEventListener('transitionend', transitionEnd);
     };
   }, [current, children]);
+
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
+      handleSlide('next');
+    }, 4000);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [handleSlide]);
 
   const slides = useMemo(() => {
     if (children.length > 1) {
@@ -78,7 +100,6 @@ const Carousel = ({ children }) => {
   return (
     <Root className="root">
       <Lists
-        // className={`on${current} `}
         ref={containerRef}
         style={{ transform: `translate3d(${-translateX}px, 0, 0)` }}
       >
@@ -135,6 +156,9 @@ const Leftbtn = styled.button`
   font-size: 16px;
   left: 0;
   left: calc((100% - 1210px) / 2);
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    display: none;
+  }
 `;
 
 const Rightbtn = styled.button`
@@ -149,4 +173,7 @@ const Rightbtn = styled.button`
   font-size: 16px;
   right: 0;
   right: calc((100% - 1200px) / 2);
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    display: none;
+  }
 `;
