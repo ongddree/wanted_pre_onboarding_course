@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { ReactComponent as Iconlink } from '..//assets/icon-link.svg';
+import { MEDIA_QUERY_END_POINT } from '../constants';
 
 const Card = ({ title, desc, img }) => {
   return (
     <Container>
-      <a href="">
+      <Thumbnail href="">
         <Img src={img}></Img>
-      </a>
+      </Thumbnail>
       <Info>
         <h3>{title}</h3>
         <h4>{desc}</h4>
@@ -29,19 +30,22 @@ const Container = styled.article`
   width: 100%;
   height: 100%;
   overflow: hidden;
-
-  a {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-  }
 `;
 
+const Thumbnail = styled.a`
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    height: 183px;
+  }
+`;
 const Img = styled.img`
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: cover;
 `;
 
 const Info = styled.div`
@@ -96,5 +100,37 @@ const Info = styled.div`
     align-items: center;
     height: 27px;
     width: 200px;
+  }
+
+  @media (max-width: ${MEDIA_QUERY_END_POINT.DESKTOP}) {
+    position: static;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    hr {
+      display: none;
+    }
+
+    h3,
+    h4 {
+      height: initial;
+      line-height: 1;
+    }
+
+    h3 {
+      margin-top: 20px;
+    }
+    h4 {
+      margin-top: 6px;
+    }
+
+    a {
+      margin: 0;
+      justify-content: center;
+      margin-top: 8px;
+    }
   }
 `;
